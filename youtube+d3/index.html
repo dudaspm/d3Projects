@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<script src="//d3js.org/d3-array.v1.min.js"></script>
+	<script src="//d3js.org/d3-color.v1.min.js"></script>
+	<script src="//d3js.org/d3-contour.v1.min.js"></script>
+	<script src="//d3js.org/d3-geo.v1.min.js"></script>
+	<script src="//d3js.org/d3-interpolate.v1.min.js"></script>
+	<script src="//d3js.org/d3-scale.v1.min.js"></script>
+	<script src="//d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<script src="//d3js.org/d3-timer.v1.min.js"></script>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+
+	<script src="JS/loadVideo.js"></script>
+    <title>youtube video</title>
+		<style>
+			div {
+				margin: 0px auto;
+				
+			}
+			table{
+				margin: 0px auto;
+			}
+
+		</style>
+
+  </head>
+  <body onload="startVis()">
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+	<table style="width:1200px">
+	  <tr>
+		 <td style="text-align:center;"><b>Video</b>
+			<div id="player"></div>
+		</td> 
+		 <td style="text-align:center;"><b>Slide Animation</b>
+			<div id="graph"></div>
+		</td> 
+	  </tr>
+
+	</table>
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '800',
+          width: '800',
+          videoId: 'N68FzjFz6VQ',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+		console.log(event);
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          playerTimer = setInterval(updateVisualization, 500);
+          //done = true;
+        }
+		else if (event.data == YT.PlayerState.PAUSED) clearInterval(playerTimer)
+      }
+      function updateVisualization() {
+//ytplayer = document.getElementById("movie_player");
+		currentTime = player.getCurrentTime();
+		runSomething()
+        
+      }
+    </script>
+  </body>
+</html>
